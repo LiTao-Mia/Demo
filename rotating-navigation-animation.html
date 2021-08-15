@@ -1,0 +1,236 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-15 11:19:36
+ * @LastEditTime: 2021-08-15 20:56:40
+ * @LastEditors: Please set LastEditors
+ * @Description: 仿写选装的导航等效果
+ * @FilePath: \Study_Notesd:\Demo\rotating-navigation-animation.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仿写旋转导航等效果</title>
+  <link rel="stylesheet" href="font/iconfont.css">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      width: 100vw;
+      height: 100vh;
+      text-align: left;
+      color: #222;
+      background-color: #333;
+    }
+    .clearfix::before,
+    .clearfix::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+    nav ul{
+      position: absolute;
+      z-index: 999;
+      top: -102px;
+      left: -102px;
+      border-radius: 50%;
+      width: 204px;
+      height: 204px;
+      background-color: #FF7979;
+      transition: all .6s linear;
+
+    }
+    nav ul li {
+      list-style: none;
+      width: 50%;
+      height: 50%;
+      
+      float: left;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+    }
+    nav ul li i.iconfont {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 36px;
+      color: #fff;
+    }
+    nav ul li.more i.iconfont {
+      margin-top: -28px;
+      margin-left: -28px;
+    }
+    nav ul li.closed i.iconfont {
+      margin-top: -36px;
+      margin-left: -10px;
+    }
+
+    nav ul li:nth-child(1) {
+      background-color: skyblue;
+      border-top-left-radius: 100%;
+      border-bottom-left-radius: 0;
+      border-top-right-radius: 0;
+      
+    }
+    nav ul li:nth-child(2) {
+      background-color: lightgreen;
+      border-top-left-radius: 0;
+      border-top-right-radius: 100%;
+      border-bottom-right-radius: 0;
+      
+    }
+    nav ul li:nth-child(3) {
+      background-color: lightpink;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 100%;
+      border-bottom-right-radius: 0;
+      
+    }
+    .main {
+      /* background-color: lightseagreen; */
+      background-color: #FAFAFA;
+      transition: all .3s ease-in-out;
+      transform-origin: top left;
+      /* transform: rotate(-20deg); */
+    }
+    .container {
+      width: 80%;
+      height: 100%;
+      margin: 0 auto;
+      /* background-color: skyblue; */
+      background-color: #FAFAFA;
+    }
+    .container h1 {
+      margin: 108px 0px 1px;
+      font-size: 36px;
+    }
+    .container .author {
+      font-style: italic;
+      font-size: 12px;
+    }
+    .container p.text {
+      margin: 24px 0px;
+      line-height: 25px;
+    }
+    .container img.photoimg {
+      width: 100%;
+    }
+    .container h2 {
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+    .moreoptions {
+      position: fixed;
+      top: 360px;
+      left: 30px;
+      /* display: none; */
+      transform: translateX(-100%);
+      /* transition: all .4s ease-in-out; */
+      z-index: 10;
+    }
+    .moreoptions li {
+      list-style: none;
+      margin-top: 30px;
+      transform: translateX(-100%);
+      transition: all .4s ease-in-out;
+    }
+    .moreoptions li:nth-child(2) {
+      padding-left: 15px;
+      transform: translateX(-150%);
+    }
+
+    .moreoptions li:nth-child(3){
+      padding-left: 30px;
+      transform: translateX(-200%);
+    }
+
+    .moreoptions a {
+      text-decoration: none;
+      font-size: 16px;
+      color: #fff;
+    }
+    .moreoptions a i.iconfont {
+      font-size: 24px;
+      margin-right: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 头部导航部分 -->
+  <nav class="rotatnav">
+    <ul>
+      <li ></li>
+      <li></li>
+      <li class="closed"><i class="iconfont">&#xe61f;</i></li>
+      <li class="more"><i class="iconfont">&#xe604;</i></li>
+    </ul>
+  </nav>
+  <!-- 网页主体内容部分 -->
+  <div class="main clearfix">
+    <div class="container">
+      <h1>Amazing Article</h1>
+      <p class="author">Florin Pop</p>
+      <p class="text">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium quia in ratione dolores cupiditate, maxime
+        aliquid impedit dolorem nam dolor omnis atque fuga labore modi veritatis porro laborum minus, illo, maiores
+        recusandae cumque ipsa quos. Tenetur, consequuntur mollitia labore pariatur sunt quia harum aut. Eum maxime
+        dolorem provident natus veritatis molestiae cumque quod voluptates ab non, tempore cupiditate? Voluptatem,
+        molestias culpa. Corrupti, laudantium iure aliquam rerum sint nam quas dolor dignissimos in error placeat quae
+        temporibus minus optio eum soluta cupiditate! Cupiditate saepe voluptates laudantium. Ducimus consequuntur
+        perferendis consequatur nobis exercitationem molestias fugiat commodi omnis. Asperiores quia tenetur nemo ipsa.
+      </p>
+      <h2>My Dog</h2>
+      <img src="imgs/photo-Dog.jpg" alt="" class="photoimg">
+      <p class="text">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit libero deleniti rerum quo, incidunt vel consequatur
+        culpa ullam. Magnam facere earum unde harum. Ea culpa veritatis magnam at aliquid. Perferendis totam placeat
+        molestias illo laudantium? Minus id minima doloribus dolorum fugit deserunt qui vero voluptas, ut quia cum amet
+        temporibus veniam ad ea ab perspiciatis, enim accusamus asperiores explicabo provident. Voluptates sint, neque
+        fuga cum illum, tempore autem maxime similique laborum odio, magnam esse. Aperiam?
+      </p>
+    </div>  
+  </div>
+  <!-- 更多选项 -->
+  <ul class="moreoptions">
+    <li><a href="javascript:;"><i class="iconfont">&#xe64e;</i>HOME</a></li>
+    <li><a href="javascript:;"><i class="iconfont">&#xe63f;</i>ABOUT</a></li>
+    <li><a href="javascript:;"><i class="iconfont">&#xe661;</i>CONTACT</a></li>
+  </ul>
+  
+  <script>
+    // 获取导航元素
+    var navli = document.querySelector('.rotatnav ul');
+    // 获取文本主体元素
+    var mainele = document.querySelector('.main');
+    // 获取更多操作元素
+    var moreoptions = document.querySelectorAll('.moreoptions li');
+    console.log(moreoptions);
+    // 控制导航元素以及文本主要元素正转还是反转
+    var flag = -1;
+    navli.addEventListener('click', function(){
+      console.log(flag);
+      this.style.transform = "rotate("+ flag * 90 +"deg)";
+      mainele.style.transform = "rotate("+ flag * 20 +"deg)";
+      var mflag = flag == 0? 1:-1;
+      for (let index = 0; index < moreoptions.length; index++) {
+        moreoptions[index].style.transform = "translateX("+ (-1) * mflag * 100 +"%)";
+      }
+      // moreoptions.style.transform = "translateX("+ (-1) * mflag * 100 +"%)";
+      flag = flag == 0? -1:0;
+      
+    })
+  </script>
+
+</body>
+
+</html>
