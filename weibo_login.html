@@ -1,0 +1,464 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-11 21:56:04
+ * @LastEditTime: 2021-08-13 21:16:11
+ * @LastEditors: Please set LastEditors
+ * @Description: 微博登录模块的仿写
+ * @FilePath: \Study_Notesd:\Demo\weibo_login.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微博登录模块的仿写</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    text-align: center;
+    background: rgb(242, 242, 245);
+  }
+  li {
+    list-style: none;
+  }
+  a {
+    text-decoration: none;
+  }
+  .clearfix::before,
+  .clearfix::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+  .loginBox {
+    width: 304px;
+    height: 290px;
+    margin: 100px auto;
+    background-color: #fff;
+    /* overflow: hidden; */
+    position: relative;
+  }
+  .loginBox .loginBox-container {
+    margin: 15px;
+    height: 100%;
+    margin-top: 20px;
+    /* background-color: skyblue; */
+  }
+  .loginBox .loginBox-container .titlelist-top {
+    margin-bottom: 16px; 
+  }
+  .loginBox .loginBox-container .titlelist-top li {
+    float: left;
+    width: 50%;
+
+  }
+  .loginBox .loginBox-container .titlelist-top li a {
+    display: inline-block;
+    height: 33px;
+    width: 100%;
+    line-height: 33px;
+    font-size: 14px;
+    color: #808080;
+    border-bottom: 1px solid #E5E5E5;
+
+  }
+  .loginBox .loginBox-container .titlelist-top li.active a{
+    color: #000;
+    border-bottom: 3px solid #FA7D3C;
+  }
+  .items-bottom .items-bottom-ullist li{
+    font-size: 12px;
+    color: #808080;
+
+  }
+  .items-bottom .loginAccount-items {
+    /* font-size: 12px;
+    color: #808080; */
+    
+    /* display: none;
+    overflow: none; */
+  }
+  .items-bottom .inputBox-container {
+    height: 34px;
+    margin: 6px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    overflow: hidden;
+    background: url("imgs/weibo_sprite_login.png") no-repeat;
+
+  }
+  .items-bottom .loginAccount-items .loginUserName-container {
+    background-position: 9px -91px;
+  
+  }
+  .items-bottom .loginAccount-items .loginUserPassword-container {
+    background-position: -41px -91px;
+  }
+  .items-bottom .loginMobile-items .loginMobile-container {
+  background-position: -90px -92px;
+  
+}
+  .items-bottom .inputBox-container input.inputBox {
+    width: 88%;
+    height: 100%;
+    outline: none;
+    border: none;
+    margin-left: 34px;
+    color: #808080;
+  }
+  .items-bottom .loginother-container {
+    margin: 14px 0px;
+    
+    text-align: left;
+  }
+  .items-bottom .loginother-container .remberMeCheckBox{
+    margin-top: -2px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .items-bottom .loginother-container .forgetPwd {
+    float: right;
+    color: #808080;
+  }
+  .items-bottom .loginother-container .forgetPwd:hover {
+    color: #FA7D3C;
+  }
+  .items-bottom .loginBtn {
+    display: block;
+    color: #fff;
+    height: 34px;
+    line-height: 34px;
+    background: #ff8140;
+    border: 1px solid #f77c3d;
+    border-radius: 3px;
+    font-size: 16px;
+    box-shadow: 0px 1px 2px rgb(0 0 0 / 25%);
+  }
+  .items-bottom .loginBtn:hover {
+    background: #f7671d;
+    border: 1px solid #f06923;
+
+  }
+  .items-bottom .loginAccount-items-register {
+    height: 36px;
+    line-height: 36px;
+    border-bottom: 1px solid #E5E5E5;
+    text-align: left;
+  }
+  .items-bottom .loginAccount-items-register a {
+    color: #EC7F5F;
+  }
+  .items-bottom .register a{
+    color: #EC7F5F;
+  }
+  .items-bottom .loginCode-items {
+    display: none;
+    overflow: none;
+
+  }
+  .items-bottom .loginCode-items .loginCode-container{
+    width: 174px;
+    height: 190px;
+    border: 1px solid #F3F3F3;
+    margin: 16px auto 0px;
+    box-shadow: 0px 1px 2px rgb(0 0 0 / 10%);
+  }
+  .items-bottom .loginCode-items  .loginCode-container img {
+    width: 144px;
+    margin-top: 17px;
+  }
+  .items-bottom .loginCode-items .bottom-text {
+    /* line-height: 16px; */
+    margin-top: 6px;
+  }
+  .items-bottom .loginMobile-items {
+    display: none;
+    overflow: none;
+  }
+  .items-bottom .loginMobile-items .text-container {
+    margin: 12px 0px;
+  }
+  .items-bottom .loginMobile-items .text-container a {
+    float: left;
+    width: 140px;
+    height: 34px;
+    line-height: 32px;
+    background-color: #f2f2f5;
+    color: #333333;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  .items-bottom .loginMobile-items .text-container a:hover {
+    background-color: #D9D9D9;
+  }
+  .items-bottom .loginMobile-items .text-container input{
+    float: right;
+    width: 116px;
+    height: 34px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+
+  }
+  .items-bottom .loginMobile-items input:focus {
+    border-color: #FA7D3C;
+  }
+  .operationdetail {
+    position: absolute;
+    top: -25px;
+    left: -280px;
+    width: 272px;
+    height: 384px;
+    background: url('imgs/weibo_sprite_login.png');
+    background-position: -284px -149px;
+    display: none;
+  }
+  .triangleops {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+  .triangleops a{
+    display: inline-block;
+    width: 42px;
+    height: 42px;
+    background-color: skyblue;
+    background: url("imgs/weibo_sprite_login.png");
+    background-position: 3px -150px;
+  }
+  .triangleops a.textpart {
+    background-position: -38px -191px;
+  }
+</style>
+<body>
+  <div class="loginBox clearfix">
+    <div class="loginBox-container">
+      <!-- 顶部内容 -->
+      <div class="titlelist-top">
+        <ul class="tab clearfix">
+          <li class="loginAccount active"><a href="javascript:;">账号登录</a></li>
+          <li class="loginCode"><a href="javascript:;">安全登录</a></li>
+        </ul>
+      </div>
+      <!-- 底部内容 -->
+      <div class="items-bottom">
+        <ul class="items-bottom-ullist">
+          <!-- 账号登录部分底部内容 -->
+          <li class="loginAccount-items">
+            <div class="loginUserName-container inputBox-container">
+              <input type="text" name="username" id="uname" class="inputBox" autocomplete="off">
+            </div>
+            <div class="loginUserPassword-container inputBox-container">
+              <input type="password" name="psw" id="upsw" class="inputBox">
+            </div>
+            <div class="loginother-container clearfix">
+              <label for="remberMe">
+                <input type="checkbox" name="remberMe" id="remberMe" checked class="remberMeCheckBox"><span>记住我</span>
+              </label>
+              <a href="javascript:;" class="forgetPwd">忘记密码</a>
+            </div>
+            <a href="javascript:;" class="loginBtn">登录</a>
+            <div class="loginAccount-items-register">还没有微博？<a href="javascript:;">立即注册！</a></div>
+          </li>
+          <li class="loginCode-items">
+            <div class="loginCode-container">
+              <img src="imgs/weibo_logincode.png" alt="下载APP">
+              <p class="loginCode-text">请用最新版微博客户端扫码</p> 
+            </div>
+            <div class="bottom-text register">
+              还没有微博？<a href="javascript:;"> 立即注册!</a>
+            </div>
+          </li>
+          <li class="loginMobile-items">
+            <div class="loginMobile-container inputBox-container">
+              <input type="tel" name="telNumber" class="inputBox" id="telNumber" placeholder="手机号码、仅支持大陆手机">
+            </div>
+            <div class="text-container clearfix">
+              <a href="javascript:;" class="textbtn">获取短信验证码</a>
+              <input type="text" name="textnum" id="textnum" class="textnum">
+            </div>
+            <div class="loginother-container clearfix">
+              <label for="loginMobile-remberMe">
+                <input type="checkbox" name="remberMe" id="loginMobile-remberMe" checked class="remberMeCheckBox"><span>记住我</span>
+              </label>
+              <a href="javascript:;" class="forgetPwd">忘记密码</a>
+            </div>
+            <a href="javascript:;" class="loginBtn">登录</a>
+            <div class="loginAccount-items-register">还没有微博？<a href="javascript:;">立即注册！</a></div>
+          </li>
+        </ul>
+      </div>
+      <!-- 手机操作图片说明部分 -->
+      <div class="operationdetail"></div>
+      <!-- 顶部右侧 -->
+      <div class="triangleops"><a href="javascript:;" class=""></a></li>
+
+    </div>
+  </div>
+
+  <script>
+    // 获取头部元素
+    var headertitlelist = document.querySelectorAll('.tab li');
+    // 获取底部元素
+    var items = document.querySelectorAll('.items-bottom-ullist li');
+    // 获取顶部右部部分
+    var triangle = document.querySelector('.triangleops a');
+    // 短信操作的页面
+    var textbottompart = document.querySelector('.loginMobile-items');
+    // 二维码的页面
+    var codePart = document.querySelector('.loginCode-items');
+    // 手机操作部分显示
+    var loginAccount = document.querySelector('.loginAccount');
+    var loginCode = document.querySelector('.loginCode');
+    // 获取元素
+    function getElement(selector) {
+      if(document.querySelectorAll(selector).length === 1){
+        return document.querySelector(selector);
+      }else if(document.querySelectorAll(selector).length > 1){
+        return document.querySelectorAll(selector)
+      }else {
+        return null;
+      }
+    }
+    // 获取手机操作图片部分
+    var opeimg = document.querySelector('.operationdetail');
+    // 手机操作说明模块处理
+    function dealOpimg() {
+
+      if(codePart.style.display === 'block') {
+      console.log('显示二维码');
+      opeimg.style.display = 'block';
+      var timer = setInterval(() => {
+        opeimg.style.display = 'none';
+        clearInterval(timer);
+      }, 5000);
+      }else{
+        opeimg.style.display = 'none';
+      }
+
+    }
+
+    triangle.addEventListener('click', function(){
+      // 排他处理
+      for(var i = 0; i < headertitlelist.length; i++){
+          headertitlelist[i].classList.remove('active');
+          items[i].style.display = 'none';
+          items[i].style.overflow = 'none';
+        }
+      textbottompart.style.display = 'none';
+      if (this.className === '') {
+        this.classList.add('textpart');
+        textbottompart.style.display = 'block';
+      } else {
+        this.classList.remove('textpart');
+        codePart.style.display = 'block';
+        console.log(codePart.style.display)
+        loginCode.classList.add('active');
+      }
+      dealOpimg();
+    })
+        
+    console.log(items);
+    console.log( headertitlelist)
+    // 注册点击事件
+    for(var i = 0; i < headertitlelist.length; i++){
+      // 设置自定义的属性：tabindex
+      headertitlelist[i].setAttribute('tabindex', i);
+      headertitlelist[i].addEventListener('click', function(){
+        // 排他处理
+        for(var i = 0; i < headertitlelist.length; i++){
+          headertitlelist[i].classList.remove('active');
+          items[i].style.display = 'none';
+          items[i].style.overflow = 'none';
+        }
+        textbottompart.style.display = 'none';
+        this.classList.add('active');
+        // 显示相应的底部内容
+        var index = this.getAttribute('tabindex');
+        console.log(index);
+        items[index].style.display = 'block';   
+        triangle.classList.remove('textpart');  
+        dealOpimg();
+      })
+    }
+    
+    // 显示隐藏文本框内容
+    // 获取账号登录的用户名输入
+    var accountNameinput = document.querySelector('.loginUserName-container input')
+    accountNameinput.value = '邮箱/会员账号/手机号';
+    // 输入框
+    var accinputs = document.querySelectorAll('.loginAccount-items .inputBox');
+    // 输入框边框处理
+    for(var i = 0; i < accinputs.length; i++) {
+      accinputs[i].addEventListener('blur', function() {
+        this.parentNode.style.borderColor = '#ccc';
+      })
+      accinputs[i].addEventListener('focus', function() {
+        this.parentNode.style.borderColor = '#f77c3d';
+      })
+
+    }
+
+    // 不聚焦时
+    accountNameinput.addEventListener('blur', function() {
+      // 判断文本框内是否有内容
+      if(this.value === '') {
+        // 填上默认内容
+        this.value = '邮箱/会员账号/手机号';
+      }
+    })
+    // 聚焦时
+    accountNameinput.addEventListener('focus', function() {
+      // 判断文本框的内容是否是默认内容
+      if(this.value === '邮箱/会员账号/手机号') {
+        this.value = '';
+      }
+    })
+
+    // 密码框的处理
+    var pswinput = document.querySelector('.loginUserPassword-container input');
+    console.log(pswinput);
+    pswinput.type = 'text';
+    pswinput.value = '请输入用户密码';
+    // 失去焦点
+    pswinput.addEventListener('blur', function() {
+      if (this.value === '') {
+        this.type = 'text';
+        this.value = '请输入用户密码';
+      }
+    })
+    pswinput.addEventListener('focus', function() {
+      if (this.value === '请输入用户密码') {
+        this.type = 'password';
+        this.value = '';
+      }
+    })
+
+    // 短信验证码
+    var textnuminput = document.querySelector('.textnum');
+    textnuminput.value = '短信验证码';
+    textnuminput.addEventListener('blur', function() {
+      // 判断文本框内是否有内容
+      if(this.value === '') {
+        // 填上默认内容
+        this.value = '短信验证码';
+      }
+    })
+    // 聚焦时
+    textnuminput.addEventListener('focus', function() {
+      // 判断文本框的内容是否是默认内容
+      if(this.value === '短信验证码') {
+        this.value = '';
+      }
+    })
+
+  </script>
+</body>
+</html>
