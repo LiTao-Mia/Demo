@@ -1,0 +1,74 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-11 17:37:46
+ * @LastEditTime: 2021-08-11 20:48:32
+ * @LastEditors: Please set LastEditors
+ * @Description: JD等的顶部广告的实现
+ * @FilePath: \Study_Notesd:\Demo\JD-TopAD.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="font/iconfont.css">
+  <title>顶部广告的仿写</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      text-align: center;
+      background-color: #eee;
+    }
+    .w {
+      width: 1190px;
+      height: 100%;
+      margin: 0 auto;
+    }
+    
+    .top-ad {
+      height: 80px;
+      background-color: rgb(13, 28, 67);
+    }
+    .top-ad a {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+    }
+    .top-ad a .top-ad-container {
+      position: relative;
+      background-color: skyblue;
+      background: url("imgs/JD-TopAd.jpg.webp");
+    }
+    .top-ad a .top-ad-container:hover {
+      outline: 1px dashed red;
+    }
+    .top-ad a .top-ad-container .icon-close{
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-style: normal;
+      color: #fff;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部广告 -->
+  <div class="top-ad">
+    <a href="#"><div class="top-ad-container w"><i class="icon-close iconfont">&#xe60e;</i></div></a>    
+  </div>
+  <script>
+    // 点击关闭按钮
+    var closeBtn = document.querySelector('.icon-close');
+    var topAd = document.querySelector('.top-ad');
+    closeBtn.onclick = function() {
+      topAd.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
