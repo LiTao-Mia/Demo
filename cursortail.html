@@ -1,0 +1,47 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-17 21:30:12
+ * @LastEditTime: 2021-08-18 08:27:38
+ * @LastEditors: Please set LastEditors
+ * @Description: 光标尾巴
+ * @FilePath: \Study_Notesd:\Demo\cursortail.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>光标小尾巴</title>
+  <style>
+    img {
+      position: absolute;
+      width: 200px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="cursorContainer">
+    <img src="imgs/Snoopy.gif">
+  </div>
+</body>
+<script>
+  var tail = document.querySelector('.cursorContainer img');
+  var cursorContainer = document.querySelector('.cursorContainer');
+  document.addEventListener('mouseover', function(){
+    tail.style.display = 'block';
+  })
+  document.addEventListener('mousemove', function(e) {
+    console.log(e.pageX);
+    console.log(e.pageY);
+    
+    tail.style.top = e.pageY - 20 + 'px';
+    tail.style.left = e.pageX - 20 + 'px';
+
+  })
+  document.addEventListener('mouseout', function(){
+    tail.style.display = 'none';
+  })
+</script>
+</html>
