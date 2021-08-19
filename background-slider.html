@@ -1,0 +1,169 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-19 08:13:43
+ * @LastEditTime: 2021-08-19 19:36:33
+ * @LastEditors: Please set LastEditors
+ * @Description: 轮播图仿写，背景轮播
+ * @FilePath: \Study_Notesd:\Demo\background-slider.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仿写背景轮播</title>
+  <link rel="stylesheet" href="font/iconfont.css">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center; 
+      text-align: center;
+
+      background-image: url('imgs/coffee1.jpg'); 
+    }
+    body::before {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, .8);
+      content: '';
+      z-index: -1;
+    }
+    .sliderContainer {
+      position: relative;
+      width: 70vw;
+      height: 70vh;
+      background-color: skyblue;
+      overflow: hidden;
+      
+
+    }
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 65px;
+      height: 78px;
+      line-height: 78px;
+      color: #fff;
+      border: 2px solid #FFA500;
+      z-index: 1;
+      /* background-color: lightpink; */     
+      background: transparent; 
+      cursor: pointer;
+    }
+    .arrow i.iconfont {
+      font-size: 42px;
+    }
+    .leftarrow {
+      border-right: none;
+      left: calc(15vw - 65px);
+    }
+    .rightarrow {
+      border-left: none;
+      right: calc(15vw - 65px);
+    }
+    .slider {
+      position: absolute;
+      top: -15vh;
+      left: -15vw;
+      width: 100vw;
+      height: 100vh;
+      background-position: center;
+      background-size: cover;
+      opacity: 0;
+      transition: all .4s ease;
+      /* background-image: url('imgs/coffee5.jpg'); */
+      /* background: lightpink; */
+    }
+    .current {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+    <div class="sliderContainer">
+      <!-- <div class="slider"></div> -->
+    </div>
+    <button class="leftarrow arrow"><i class="iconfont">&#xe65e;</i></button>
+    <button class="rightarrow arrow"><i class="iconfont">&#xe65d;</i></button>
+    
+    <script>
+      // 图片的列表
+      var imglist = [
+        {imgName: 'coffee4.jpg', imgPath: 'imgs/coffee4.jpg'},
+        {imgName: 'coffee2.jpg', imgPath: 'imgs/coffee2.jpg'},
+        {imgName: 'coffee3.jpg', imgPath: 'imgs/coffee3.jpg'},
+        {imgName: 'coffee5.jpg', imgPath: 'imgs/coffee5.jpg'},   
+        {imgName: 'coffee1.jpg', imgPath: 'imgs/coffee1.jpg'},
+      ]
+      // 获取元素
+      var body = document.body;
+      // 获取容器
+      var sliderContainer = document.querySelector('.sliderContainer');
+      for (let index =0; index < imglist.length; index++) {
+        var divele = document.createElement('div');
+        divele.classList.add('slider');
+        divele.style.backgroundImage = "url('" + imglist[index].imgPath + "')";
+        // 设置显示第一个图片
+        if(index === 0) {
+          divele.classList.add('current');
+          body.style.backgroundImage = divele.style.backgroundImage;
+          
+        }
+        sliderContainer.appendChild(divele);
+
+      }
+      // 获取左箭头和右箭头
+      var leftbtn = document.querySelector('.leftarrow');
+      var rightbtn = document.querySelector('.rightarrow');
+      var sliderlist = document.querySelectorAll('.slider');
+      var currentindex = 0;
+      leftbtn.addEventListener('click', () => {
+
+        // 点击左箭头
+        currentindex--;
+        if (currentindex < 0) {
+          currentindex = imglist.length - 1;
+          
+        }
+        console.log(currentindex);
+        // 排他处理
+        for (let index = 0; index < sliderlist.length; index++) {
+          sliderlist[index].classList.remove('current');
+        }
+        sliderlist[currentindex].classList.add('current');
+        body.style.backgroundImage = document.querySelector('.current').style.backgroundImage;
+      })
+      // 右侧按钮点击事件
+      rightbtn.addEventListener('click', () => {
+        currentindex ++;
+        if(currentindex > imglist.length -1) {
+          currentindex = 0;
+        }
+        // 排他处理
+        for (let index = 0; index < sliderlist.length; index++) {
+          sliderlist[index].classList.remove('current');
+        }
+        sliderlist[currentindex].classList.add('current');
+        body.style.backgroundImage = document.querySelector('.current').style.backgroundImage;
+
+      })
+      
+
+</script>
+</body>
+</html>
