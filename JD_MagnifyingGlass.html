@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仿写京东放大镜效果</title>
+  <link rel="stylesheet" href="font/iconfont.css">
+</head>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  body {
+    text-align: center;
+    background-color: #fafafa;
+  }
+  img {
+    vertical-align: bottom;
+  }
+  .fl {
+    float: left;
+  }
+  .fr {
+    float: right;
+  }
+  .clearfix::before,
+  .clearfix::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+  .container {
+    position: relative;
+    width: 352px;
+    height: 352px;
+
+    background-color: lightskyblue;
+    margin-top: 100px;
+    margin-left: 100px;
+    border: 1px solid #EEE;
+  }
+  .container .imgSBox .player_icon {
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    left: calc(50% - 54px / 2);
+    bottom: 66px;
+    background: url("imgs/JD_spirte_player.png") center no-repeat;
+    background-position: 0px -54px;
+    z-index: 996;
+  }
+  .container .imgSBox video {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+  }
+  .container .magifyGlass{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 238px;
+    height: 238px;
+    border: 1px solid #7B7B7B;
+    background-color: rgba(255, 238, 0, .5);
+    cursor: move;
+    display: none;
+  }
+
+  .container .imgSBox img {
+    width: 100%;
+    vertical-align: bottom;
+  }
+  .container .magnifyingBox {
+    position: absolute;
+    top: 0px;
+    left: 100%;
+    margin-left: 10px;
+    width: 542px;
+    height: 542px;
+    border: 1px solid #7B7B7B;
+    overflow: hidden;
+    display: none;
+
+  }
+  .container .magnifyingBox  img{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 860px;
+    
+  }
+  /* 模态框 */
+  .dialogBox {
+    display: none;
+  }
+  /* mask */
+  .dialogBox::after{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-color: rgb(0, 0, 0);
+    opacity: .15;
+    z-index: 998;
+  }
+  .dialogBox .modalBoxContainer {
+    position: absolute;
+    top: calc(50% - 667px/2);
+    left: calc(50% - 978px/2);
+    /* transform: translate(-50%, -50%); */
+    width: 968px;
+    height: 667px;
+    border-radius: 8px;
+    border: 10px solid rgba(0,0,0,.1);;
+    background-color: #fff;
+    /* 实现透明的边框 */
+    background-clip: padding-box;
+    z-index: 999;
+  }
+  .dialogBox .modalBoxContainer .toptitle {
+    height: 30px;
+    padding: 0px 10px;
+    line-height: 30px;
+    background-color: #F3F3F3;
+    font-size: 14px;
+    color: #666;
+  }
+  .dialogBox .modalBoxContainer .toptitle span {
+    float: left;
+  }
+  .dialogBox .modalBoxContainer .toptitle i {
+    float: right;
+    cursor: pointer;
+  }
+  .dialogBox .modalBoxContainer .containerBottom {
+    position: relative;
+    margin: 40px 10px 0px;
+    border-top: 1px solid #E4E4E4;
+  }
+  .dialogBox .modalBoxContainer .containerBottom a.btn {
+    position: absolute;
+    top: -30px;
+    left: 0px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 12px;
+    width: 90px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #E4393C;
+
+  }
+  .dialogBox .modalBoxContainer .containerBottom .leftaside {
+    position: relative;
+    width: 736px;
+    height: 550px;
+    overflow: hidden;
+    /* background-color: lightpink; */
+    /* margin-right: 176px; */
+  }
+  .dialogBox .modalBoxContainer .containerBottom .leftaside img.small {
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 546px;
+    height: 546px;
+  }
+  
+    .dialogBox .modalBoxContainer .containerBottom .leftaside img.zoomimg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 800px;
+    height: 800px;
+    display: none;
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside {
+    width: 192px;
+    /* background-color: skyblue; */
+    padding-left: 15px;
+    
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .top-text {
+    text-align: left;
+    font-size: 14px;
+    line-height: 24px;
+    color: #666;
+    margin: 20px 0px;
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .top-text span.price {
+    font-size: 16px;
+    color: #E4393C;
+    font-weight: 700;
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .imgbox {
+    /* width: 175px;
+    height: 384px; */
+    /* position: relative; */
+    border: 1px solid #E4E4E4;
+    padding: 20px;
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .imgbox .imglistContainer {
+    position: relative;
+    width: 145px;
+    height: 288px;
+    overflow: hidden;
+
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .imgbox .imglist {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    /* width: 326px; */
+    height: 288px;
+    transition: all .5s;
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .imgbox .imglist li {
+    list-style: none;
+    float: left;
+    width: 145px;
+    margin-left: 36px;
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .imgbox .imglist li:first-child {
+    margin-left: 0px;
+  }
+
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .imgbox .imglist li a {
+    float: left;
+    width: 60px;
+    height: 60px;
+    border: 1px solid #E4E4E4;
+    /* background-color: lightpink; */
+    margin-bottom: 15px;
+
+
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .imgbox .imglist li a.current {
+    border-color: #E4393C;
+    background-color: #E4393C;
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .imgbox .imglist li a:nth-child(2n) {
+    margin-left: 12px;
+  }
+  .dialogBox .modalBoxContainer .containerBottom .rightaside .imgbox .imglist li a img {
+    width: 100%;
+    padding: 2px;
+  }
+  .page {
+    display: none;
+    margin-top: 20px;
+  }
+  .page .btn {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border: 1px solid #E4E4E4;
+    vertical-align: middle;
+  }
+  .page .btn i.iconfont {
+    color: #666;
+  }
+  .page .btn:hover i.iconfont {
+    color: #E4393C;
+  }
+
+  .page .btn.dis i.iconfont {
+    color: #999;
+  }
+  .page .pageText {
+    
+    margin: 0 15px;
+    color: #6F6F6F;
+    font-size: 12px;
+  }
+</style>
+<body>
+  <div class="container">
+    <div class="imgSBox">
+      <img src="imgs/商品示例图.jpg" alt="商品照片">
+      <!-- 播放键 -->
+      <span class="player_icon"></span>
+      <!-- 放大镜 -->
+      <div class="magifyGlass"></div>
+
+    </div>
+    <!-- 放大的盒子 -->
+    <div class="magnifyingBox">
+      <img src="imgs/商品实例图大.jpg" alt="商品照片大">
+    </div>
+
+  </div>
+  <!-- 商品模态框 -->
+  <div class="dialogBox">
+    <div class="modalBoxContainer">
+      <div class="toptitle">
+        <span>大图</span>
+        <i class="iconfont closed">&#xe634;</i>
+      </div>
+      <div class="containerBottom clearfix">
+        <a href="javascript:;" class="btn">大图</a>
+        <div class="leftaside fl">
+          <img src="imgs/bp1.jpg" class="small">
+          <img src="imgs/p1.jpg" class="zoomimg">
+        </div>
+        <!-- 右侧 -->
+        <div class="rightaside fr">
+          <div class="top-text">
+            希捷(Seagate)移动硬盘睿翼新款 2.5英寸USB3.0黑色便携商务办公 兼容MAC 新睿
+            京&nbsp;东&nbsp;价<span class="price">￥779.00</span>
+          </div>
+          <div class="imgbox">
+            <div class="imglistContainer">
+              <ul class="imglist clearfix">
+              </ul>            
+            </div>
+            
+            <!-- 分页 -->
+            <div class="page">
+              <button class="btn lbtn dis" disabled><i class="iconfont">&#xe628;</i></button>
+              <!-- <span class="pageText">1/2</span> -->
+              <span class="pageText"></span>
+              <button class="btn rbtn"><i class="iconfont">&#xe627;</i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    window.addEventListener('load', function () {
+      // 获取元素
+      // 放大镜
+      var fdj = document.querySelector('.container .magifyGlass');
+      // 容器
+      var container = document.querySelector('.container');
+      // 商品照片小盒子
+      var imgSBox = document.querySelector('.container .imgSBox');
+      // 获取小盒子的宽和高
+      var containerTop = container.offsetTop;
+      var containerLeft = container.offsetLeft;
+      // 宽和高应该准确是小盒子的宽和高，container中包含的不仅是小盒子
+      var containerWidth = imgSBox.offsetWidth;
+      var containerHeight = imgSBox.offsetHeight;
+      // console.log(containerWidth);
+      // console.log(containerHeight);
+      // 商品照片大盒子
+      var imgBBox = document.querySelector('.container .magnifyingBox');
+      var bigImg = document.querySelector('.container .magnifyingBox img');
+
+      // 鼠标进入商品小盒子时，放大镜出现
+      imgSBox.addEventListener('mouseover', function(e) {
+        fdj.style.display = 'block';
+        imgBBox.style.display = 'block';
+      })
+
+      imgSBox.addEventListener('mousemove', function(e) {
+        // imgBBox.style.display = 'block';
+        // 计算光标在图片小盒子的坐标
+        var X = e.pageX - containerLeft;
+        var Y = e.pageY - containerTop;
+        // console.log('光标X坐标:', X);
+        // console.log('光标Y坐标:', Y);
+        // 使光标处于放大镜的中间
+        var fdjX = X - fdj.offsetWidth / 2;
+        var fdjY = Y - fdj.offsetHeight / 2;
+        // 放大镜最大边界
+        var fdjX_Max = containerWidth - fdj.offsetWidth / 2;
+        var fdjY_Max = containerHeight - fdj.offsetHeight / 2;
+        // console.log("放大镜最右侧临界:", fdjX_Max);
+        // console.log("放大镜最下侧临界:", fdjY_Max);
+        // 判断放大镜是否超出边界
+        // 水平方向
+        if ( fdjX <= 0 ) {
+          // 超出左边边界
+          fdjX = 0;
+        } else if ( X > fdjX_Max ) {
+          // 超出右边边界
+          // console.log("超出右边界");
+          fdjX = containerWidth - fdj.offsetWidth;
+        }
+        // 垂直方向
+        if ( fdjY <= 0 ) {
+          // 超出上方边界
+          fdjY = 0;
+          
+        } else if ( Y > fdjY_Max ){
+          // 超出下方边界
+          // console.log("超出下边界");
+          fdjY = containerHeight - fdj.offsetHeight;
+        }
+
+        fdj.style.left = fdjX + 'px';
+        fdj.style.top = fdjY + 'px';
+
+        // 操作放大图移动
+        // 计算放大图的坐标
+        // 计算公式：放大镜移动的距离 / 放大镜可移动的最大距离 = 放大图的移动的距离 / 放大图可移动的最大距离
+        // 放大镜最大的移动范围距离
+        var fdjMdX_Max = containerWidth - fdj.offsetWidth; 
+        var fdjMdY_Max = containerHeight - fdj.offsetHeight;
+        // 放大图最大的移动范围
+        var imgBBoxWidth = imgBBox.offsetWidth;
+        var imgBBoxHeight = imgBBox.offsetHeight;
+        var bigImgWidth = bigImg.offsetWidth;
+        var bigImgHeight = bigImg.offsetHeight;
+
+        var bigImgMdX_Max = bigImgWidth - imgBBoxWidth;
+        var bigImgMdY_Max = bigImgHeight - imgBBoxHeight;
+        // 让放大的图移动起来
+        bigImg.style.left = -fdj.offsetLeft / fdjMdX_Max * bigImgMdX_Max + 'px';
+        bigImg.style.top = -fdj.offsetTop / fdjMdY_Max * bigImgMdY_Max + 'px';
+        // console.log("大图移动left:", bigImg.style.left);
+        // console.log("大图移动top:", bigImg.style.top);
+
+
+      })
+
+      imgSBox.addEventListener('mouseout', function() {
+        fdj.style.display = 'none';
+        imgBBox.style.display = 'none';
+      })
+          // 模态框性质的对话框的处理
+      var imgObj = [
+        {imgname: 'sp1.jpg', imgpath:'imgs/sp1.jpg', zoomimgname:'p1.jpg', zoomimgpath:'imgs/p1.jpg', bimgname: 'bp1.jpg', bimgpath:'imgs/bp1.jpg'},
+        {imgname: 'sp2.jpg', imgpath:'imgs/sp2.jpg', zoomimgname:'p2.jpg', zoomimgpath:'imgs/p2.jpg', bimgname: 'bp2.jpg', bimgpath:'imgs/bp2.jpg'},
+        {imgname: 'sp3.jpg', imgpath:'imgs/sp3.jpg', zoomimgname:'p3.jpg', zoomimgpath:'imgs/p3.jpg', bimgname: 'bp3.jpg', bimgpath:'imgs/bp3.jpg'},
+        {imgname: 'sp4.jpg', imgpath:'imgs/sp4.jpg', zoomimgname:'p4.jpg', zoomimgpath:'imgs/p4.jpg', bimgname: 'bp4.jpg', bimgpath:'imgs/bp4.jpg'},
+        {imgname: 'sp5.jpg', imgpath:'imgs/sp5.jpg', zoomimgname:'p5.jpg', zoomimgpath:'imgs/p5.jpg', bimgname: 'bp5.jpg', bimgpath:'imgs/bp5.jpg'},
+        {imgname: 'sp6.jpg', imgpath:'imgs/sp6.jpg', zoomimgname:'p6.jpg', zoomimgpath:'imgs/p6.jpg', bimgname: 'bp6.jpg', bimgpath:'imgs/bp6.jpg'},
+        {imgname: 'sp7.jpg', imgpath:'imgs/sp7.jpg', zoomimgname:'p7.jpg', zoomimgpath:'imgs/p7.jpg', bimgname: 'bp7.jpg', bimgpath:'imgs/bp7.jpg'},
+        {imgname: 'sp8.jpg', imgpath:'imgs/sp8.jpg', zoomimgname:'p8.jpg', zoomimgpath:'imgs/p8.jpg', bimgname: 'bp8.jpg', bimgpath:'imgs/bp8.jpg'},
+        {imgname: 'sp9.jpg', imgpath:'imgs/sp9.jpg', zoomimgname:'p9.jpg', zoomimgpath:'imgs/p9.jpg', bimgname: 'bp9.jpg', bimgpath:'imgs/bp9.jpg'},
+        {imgname: 'sp10.jpg', imgpath:'imgs/sp10.jpg', zoomimgname:'p10.jpg', zoomimgpath:'imgs/p10.jpg', bimgname: 'bp10.jpg', bimgpath:'imgs/bp10.jpg'},
+      ]
+
+      // 获取图片列表ul
+      var imgList = document.querySelector('.dialogBox .rightaside .imgbox .imglist');
+      // 判断是否分页
+      // 每页最多显示图片数量
+      var imgMax = 8;
+      var imgnum = 0;
+      // 获取大图片盒子
+      var bimgBox = document.querySelector('.dialogBox .leftaside');
+
+      var pageNum = Math.ceil(imgObj.length / imgMax);
+      console.log('pageNum:', pageNum);
+      for (let pageindex = 1; pageindex <= pageNum; pageindex++) {
+        var liele = document.createElement('li');
+        // liele.classList.add('clearfix');
+        for (let imgindex = 0; imgindex < imgMax && imgnum < imgObj.length; imgindex++) {
+          var aele = document.createElement('a');
+          aele.href = 'javascript:;';
+          aele.setAttribute('imgindex', imgnum);
+          aele.innerHTML = "<img src='" + imgObj[imgnum].imgpath + "'>";
+          // 默认
+          if (imgnum === 0) {
+            aele.classList.add('current');
+          }
+
+          liele.appendChild(aele);
+          imgnum++;
+        }
+        imgList.appendChild(liele);
+      }
+      console.log(document.querySelector('.imglist li').offsetWidth);
+      // 145: 单个li的宽度，36为margin距离
+      imgList.style.width = 145 * pageNum + 36 * (pageNum - 1) + 'px';
+      // console.log('imgList宽度:', imgList.offsetWidth);
+
+
+      var currentPage = 1;
+      var page = document.querySelector('.page');
+      var pageText = document.querySelector('.page .pageText');
+      // 超出一页
+      if (pageNum > 1) {
+        // 显示相关的分页
+        pageText.innerHTML = currentPage + '/' + pageNum;
+        page.style.display = 'block';
+      }
+      // 翻页设计
+      // 获取左右翻页按钮
+      var lbtn = document.querySelector('.page .lbtn');
+      // console.log(lbtn);
+      var rbtn = document.querySelector('.page .rbtn');
+      var btns = document.querySelectorAll('.dialogBox .rightaside .imgbox .page .btn');
+      // console.log(imgList.clientLeft);
+      // console.log(imgList.offsetLeft);
+      lbtn.addEventListener('click', () => {
+        // 
+        console.log('点击左键~');
+        currentPage--;
+        currentPage = currentPage < 1? 1 : currentPage;
+        console.log('currentPage:', currentPage);
+        // 类似翻页操作
+        // console.log('imgList.clientLeft', imgList.offsetLeft);
+        // console.log("imgListleft:", imgList.offsetLeft + document.querySelector('.dialogBox .rightaside .imgbox').offsetWidth +"px");
+        imgList.style.left = imgList.offsetLeft + document.querySelector('.dialogBox .rightaside .imgbox').offsetWidth +"px";
+        pageText.innerHTML = currentPage + '/' + pageNum;
+
+        btns.forEach((btn) => btn.classList.remove('dis'));
+        if ( currentPage === 1 ) {
+          lbtn.classList.add('dis');
+          lbtn.disabled = !lbtn.disabled;
+          rbtn.disabled = !rbtn.disabled;
+        }
+
+      })
+
+      rbtn.addEventListener('click', () => {
+        currentPage++;
+        currentPage = currentPage > pageNum? pageNum : currentPage;
+        console.log('点击右键~');
+        console.log('currentPage:', currentPage);
+        // 类似翻页操作
+        // console.log('imgList.clientLeft', imgList.clientLeft);
+        // console.log("imgListleft:", imgList.offsetLeft - document.querySelector('.dialogBox .rightaside .imgbox').offsetWidth +"px");
+        imgList.style.left =  imgList.offsetLeft - document.querySelector('.dialogBox .rightaside .imgbox').offsetWidth +"px";
+        pageText.innerHTML = currentPage + '/' + pageNum;
+
+        btns.forEach((btn) => btn.classList.remove('dis'));
+        if ( currentPage === pageNum ) {
+          rbtn.classList.add('dis');
+          rbtn.disabled = !rbtn.disabled;
+          lbtn.disabled = !lbtn.disabled;
+
+
+        }
+      })
+
+      // 小图和大图的联动
+      var simgBoxs = document.querySelectorAll('.dialogBox .rightaside .imgbox .imglist li a');
+      // 获取正常图元素
+      var bimg = document.querySelector('.dialogBox .leftaside img.small');
+      var zimg = document.querySelector('.dialogBox .leftaside img.zoomimg');
+      simgBoxs.forEach((simgBox) => {
+        simgBox.addEventListener('mouseover', () => {
+          var index = simgBox.getAttribute('imgindex');
+          bimg.src = imgObj[index].bimgpath;
+          zimg.src = imgObj[index].zoomimgpath;
+          simgBoxs.forEach((simgBox) => { simgBox.classList.remove('current') });
+          simgBoxs[index].classList.add('current');
+        })
+
+      })
+      // 处理大图的同鼠标的移动
+      var dialogMain = document.querySelector('.dialogBox .modalBoxContainer');
+      var dialogBottom = document.querySelector('.dialogBox .containerBottom');
+      var zoomBox = document.querySelector('.dialogBox .containerBottom .leftaside');
+      // var zoomImg = document.querySelector('.dialogBox .containerBottom .leftaside .zoomimg');
+
+
+      zoomBox.addEventListener('mouseover', (e) => { 
+
+        bimg.style.display = 'none';
+        zimg.style.display = 'block';
+
+      })
+
+      zoomBox.addEventListener('mousemove', (e) => {
+        
+        // 计算光标在盒子里的坐标值
+        var X = e.pageX - zoomBox.getBoundingClientRect().left;
+        var Y = e.pageY - zoomBox.getBoundingClientRect().top;
+        console.log('X:', X);
+        console.log('Y:', Y);
+        // 放大图移动起来
+        var zimgTop = -zimg.offsetHeight / zoomBox.offsetHeight * Y * 0.5;
+        var zimgLeft = -zimg.offsetWidth / zoomBox.offsetWidth * X * 0.1;
+        // 设置移动的边界
+        // 计算边界值
+        if (zimgTop > 0) {
+          zimgTop = 0;
+        } else if(zimgTop < zoomBox.offsetHeight - zimg.offsetHeight) {
+          zimgTop = zoomBox.offsetHeight - zimg.offsetHeight;
+        }
+
+        if (zimgLeft > 0) {
+          zimgLeft = 0;
+        } else if(zimgLeft <  zoomBox.offsetWidth - zimg.offsetWidth) {
+          zimgLeft = zoomBox.offsetWidth - zimg.offsetWidth;
+        }
+        
+        zimg.style.top = zimgTop + 'px';
+        zimg.style.left = zimgLeft + 'px';
+
+
+      })
+
+      zoomBox.addEventListener('mouseout', (e) => { 
+        bimg.style.display = 'block';
+        zimg.style.display = 'none';
+        zimg.style.top = '0px';
+        zimg.style.left = '0px';
+      })
+
+
+
+      // 注册对话框关闭事件
+      // 获取对话框
+      var dialog = document.querySelector('.dialogBox');
+      var closedBtn = document.querySelector('.dialogBox .toptitle .closed');
+      closedBtn.addEventListener('click', () => {
+        dialog.style.display = 'none';
+      })
+
+      // 注册点开对话框的事件
+      imgSBox.addEventListener('click', () => {
+        dialog.style.display = 'block';
+
+        // 计算对话框的位置
+
+        if ( window.innerWidth > dialogMain.offsetWidth ) {
+          dialogMain.style.left = window.innerWidth / 2 - dialogMain.offsetWidth / 2 + 'px';
+          
+        } else {
+          dialogMain.style.left = '0px';
+        }
+
+        if ( window.innerHeight > dialogMain.offsetHeight ) {
+          console.log('UP')
+          dialogMain.style.top = window.innerHeight / 2 - dialogMain.offsetHeight / 2 + 'px';
+          
+        } else {
+          dialogMain.style.top = '0px';
+        }
+
+
+      })
+
+      // 监听浏览器窗口的变化
+      window.addEventListener('resize', () => {
+        if ( document.body.clientWidth > dialogMain.offsetWidth ) {
+          dialogMain.style.left = document.body.clientWidth / 2 - dialogMain.offsetWidth / 2 + 'px';
+          
+        } else {
+          dialogMain.style.left = '0px';
+        }
+
+        if ( window.innerHeight > dialogMain.offsetHeight ) {
+          dialogMain.style.top = window.innerHeight / 2 - dialogMain.offsetHeight / 2 + 'px';
+          
+        } else {
+          dialogMain.style.top = '0px';
+        }
+      })
+
+
+    })
+
+
+
+  </script>
+</body>
+</html>
