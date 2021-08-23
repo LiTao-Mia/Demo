@@ -1,0 +1,109 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-22 17:02:52
+ * @LastEditTime: 2021-08-23 08:49:51
+ * @LastEditors: Please set LastEditors
+ * @Description: 范围读数
+ * @FilePath: \Study_Notesd:\Demo\custom-range-slider.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仿写范围读数</title>
+  <style>
+    body {
+      background-color: #EBEFF5;
+      min-height: 100vh;
+      min-width: 100vw;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    h1 {
+      margin-bottom: 160px;
+    }
+    .rangeBox {
+      /* background-color: lightpink; */
+      position: relative;
+      /* --rnum: 180; */
+    }
+    .rangeBox .numBox {
+      position: absolute;
+      top: -180%;
+      /* left: calc(var(--rnum) / 100 * 360px - 40px); */
+      left: calc(50% - 40px);
+      width: 80px;
+      height: 30px;
+      line-height: 30px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+      background-color: #fff;
+    }
+    .rangeBox input {
+      width: 360px;
+      height: 12px;
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: #EBEFF5;
+
+    }
+    .rangeBox input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background-color: #fff;
+      border: 1px solid skyblue;
+      margin-top: -6px;
+
+    } 
+
+    .rangeBox input::-webkit-slider-runnable-track {
+      height: 12px; 
+      border-radius: 5px;
+      background-color: skyblue;
+    }
+  </style>
+</head>
+<body>
+  <h1>Custom Range Slider</h1>
+  <div class="rangeBox" style="--rnum: 50">
+    <label for="rangeNum"  class="numBox">50</label>
+    <input type="range" name="rangeNum" id="rangeNum" min="0" max="100" value="50">
+  </div>
+  
+  <script>
+    var inpt = document.querySelector('.rangeBox input');
+    inpt.addEventListener('input', (e) => {
+      inpt.previousElementSibling.innerHTML = inpt.value;
+      // 计算偏移量，避免使得其有所偏移
+      // 计算偏移值
+      var in_Max = +inpt.max;
+      var in_Min = +inpt.min;
+      var out_Max = -10;
+      var out_Min = 10;
+      var scaleNum =  (inpt.value - in_Min) * (out_Max - out_Min) / (in_Max - in_Min) + out_Min;
+      // 带单位的属性值
+      const range_width = getComputedStyle(e.target).getPropertyValue('width')
+      const label_width = getComputedStyle(inpt.previousElementSibling).getPropertyValue('width')
+      // console.log('range_width', range_width);
+      // console.log('label_width', label_width);
+      // console.log('inpt.offsetWidth', inpt.offsetWidth);
+      // console.log('label_width', label_width);
+      // console.log(inpt.value / in_Max * inpt.offsetWidth - inpt.previousElementSibling.offsetWidth / 2 + scaleNum + 'px');
+      
+      inpt.previousElementSibling.style.left = inpt.value / in_Max * inpt.offsetWidth - inpt.previousElementSibling.offsetWidth / 2 + scaleNum + 'px'; 
+      inpt.parentNode.style.setProperty('--rnum', inpt.value);
+      
+      
+    })
+    
+  </script>
+</body>
+</html>

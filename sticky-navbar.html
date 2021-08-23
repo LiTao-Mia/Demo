@@ -1,0 +1,206 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-23 10:57:32
+ * @LastEditTime: 2021-08-23 21:02:59
+ * @LastEditors: Please set LastEditors
+ * @Description: 粘粘式导航
+ * @FilePath: \Study_Notesd:\Demo\sticky-navbar.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仿写粘粘式导航栏</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      vertical-align: bottom;
+    }
+
+    body {
+      text-align: center;
+      font-family: 'Open Sans', sans-serif;
+      color: #222;
+    }
+
+    nav {
+      width: 100vw;
+      background-color: #222;
+      position: fixed;
+      box-shadow: 0px 0px 12px 2px rgba(0, 0, 0, .5);
+      transition: all .3 ease-in-out;
+    }
+    nav.fixed {
+      background-color: #fff;
+    }
+    nav.fixed .nav_container  {
+      height: 54px;
+    }
+    nav.fixed .nav_container .logo_left a,
+    nav.fixed .nav_container .nav_items li a {
+      color: #222;
+    }
+
+    nav .nav_container {
+      width: 80vw;
+      height: 74px;
+      line-height: 74px;
+      margin: 0px auto;
+      /* background-color: lightblue; */
+
+    }
+
+    nav .nav_container .logo_left {
+      float: left;
+    }
+
+    nav .nav_container .logo_left a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 25px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    nav .nav_container .logo_left a:hover {
+      color: #C0392B;
+    }
+
+    nav .nav_container .nav_items {
+      float: right;
+    }
+
+    nav .nav_container .nav_items li {
+      float: left;
+      list-style: none;
+      margin-left: 30px;
+    }
+
+    nav .nav_container .nav_items li a {
+      text-decoration: none;
+      color: #fff;
+      transition: all 0.3s ease-in-out;
+    }
+
+    nav .nav_container .nav_items li a.active,
+    nav .nav_container .nav_items li a:hover {
+      color: #C0392B;
+    }
+
+    .banner {
+      height: 100vh;
+      background: url('imgs/pexels-website.jpeg') center no-repeat;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      background-color: silver;
+      position: relative;
+      z-index: -2;
+
+    }
+
+    .banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, .5);
+      z-index: -1;
+
+    }
+
+    .banner h2 {
+      font-size: 56px;
+      margin-bottom: 36px;
+    }
+
+    .banner p {
+      font-size: 24px;
+    }
+    .content_Container {
+      text-align: left;
+      margin: 0px 74px 54px;
+    }
+    .content_Container h3 {
+      margin: 28px 0px;
+      font-size: 24px;
+  
+    }
+    .content_Container .content_text {
+      line-height: 34px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 导航 -->
+  <nav>
+    <div class="nav_container">
+      <!-- 右边的logo -->
+      <div class="logo_left">
+        <h1><a href="#">My Website</a></h1>
+      </div>
+      <div class="nav_items">
+        <ul>
+          <li><a href="javascript:;" class="active">Home</a></li>
+          <li><a href="javascript:;">About</a></li>
+          <li><a href="javascript:;">Services</a></li>
+          <li><a href="javascript:;">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="banner">
+    <h2>Welcome To My Website</h2>
+    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores, consequuntur?</p>
+  </div>
+  <div class="content_Container">
+    <h3>Content One</h3>
+    <p class="content_text">
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione dolorem voluptates eveniet tempora ut cupiditate
+      magnam, sapiente, hic quo in ipsum iste soluta eaque perferendis nihil recusandae dolore officia aperiam corporis
+      similique. Facilis quos tempore labore totam! Consectetur molestiae iusto ducimus error reiciendis aspernatur
+      dolor, modi dolorem sit architecto, voluptate magni sunt unde est quas? Voluptates a dolorum voluptatum quo
+      perferendis aut sit. Aspernatur libero laboriosam ab eligendi omnis delectus earum labore, placeat officiis sint
+      illum rem voluptas ipsum repellendus iste eius recusandae quae excepturi facere, iure rerum sequi? Illum velit
+      delectus dicta et iste dolorum obcaecati minus odio eligendi!
+    </p>
+    <h3>Content Two</h3>
+    <p class="content_text">
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione dolorem voluptates eveniet tempora ut cupiditate
+      magnam, sapiente, hic quo in ipsum iste soluta eaque perferendis nihil recusandae dolore officia aperiam corporis
+      similique. Facilis quos tempore labore totam! Consectetur molestiae iusto ducimus error reiciendis aspernatur
+      dolor, modi dolorem sit architecto, voluptate magni sunt unde est quas? Voluptates a dolorum voluptatum quo
+      perferendis aut sit. Aspernatur libero laboriosam ab eligendi omnis delectus earum labore, placeat officiis sint
+      illum rem voluptas ipsum repellendus iste eius recusandae quae excepturi facere, iure rerum sequi? Illum velit
+      delectus dicta et iste dolorum obcaecati minus odio eligendi!
+    </p>
+  </div>
+
+  <script>
+    var nav =  document.querySelector('nav');
+    document.addEventListener('scroll', (e) => {
+      // console.log(e);
+      console.log(window.scrollY)
+      console.log(window.pageYOffset)
+      if(window.pageYOffset > nav.offsetHeight + 260){
+        nav.classList.add('fixed');
+      } else {
+        nav.classList.remove('fixed');
+      }
+    })
+  </script>
+
+</body>
+
+</html>

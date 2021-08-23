@@ -1,0 +1,99 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-21 20:22:58
+ * @LastEditTime: 2021-08-22 18:43:51
+ * @LastEditors: Please set LastEditors
+ * @Description: 仿写色彩对比功能
+ * @FilePath: \Study_Notesd:\Demo\diff.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仿写色彩对比</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    body {
+      /* background-color: lightcyan; */
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+    }
+    .imgBox {
+      position: relative;
+      width: 800px;
+      height: 600px;
+      box-shadow: 0px 5px 6px rgba(0, 0, 0, .2);
+      border-radius: 8px;
+
+      /* 参数 */
+      --height: 600px;
+
+    }
+    .imgBox::before,
+    .imgBox::after {
+      content: '';
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      height: inherit;
+      width: inherit;
+      background: url('imgs/imgdiff.jpg');
+      background-size: cover;
+    }
+    .imgBox::before {
+      filter:grayscale(100%);
+    }
+    .imgBox::after {
+      clip-path: inset(0 0 0 calc(var(--slide) / 1000* 100%));
+    }
+    .imgBox #slider {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      z-index: 999;
+      width: inherit;
+      height: inherit;
+      background: transparent;
+
+    }
+    .imgBox #slider::-webkit-slider-thumb {
+    
+      -webkit-appearance: none;
+      appearance: none;
+      height: var(--height);
+      width: 18px;
+      background: #000;
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, .5);
+      border-radius: 3px;
+      cursor: ew-resize;
+    }
+  </style>
+</head>
+<body>
+  <div class="imgBox" style="--slide:500">
+    <input type="range" name="sliderrange" id="slider" min="1" max="1000" value="500">
+    <!-- <input type="range" min="1" max="1000" value="500" class="slider" id="slider" oninput="this.parentNode.style.setProperty('--slide', `${this.value}`)"> -->
+  </div>  
+  <script>
+    var sliderInput = document.querySelector('input#slider');
+    sliderInput.addEventListener('input', (e) => {
+      console.log(sliderInput.value);
+      sliderInput.parentNode.style.setProperty('--slide', `${sliderInput.value}`);
+    })
+  </script>
+</body>
+</html>
