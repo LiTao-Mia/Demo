@@ -1,0 +1,179 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-26 20:16:04
+ * @LastEditTime: 2021-08-27 14:12:50
+ * @LastEditors: Please set LastEditors
+ * @Description: 仿写图片轮播
+ * @FilePath: \Study_Notesd:\Demo\imge-carous.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    clearfix::before,
+    clearfix::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .imgBox {
+      width: 502px;
+      height: 530px;
+      background-color: skyblue;
+      box-shadow: 0 6px 12px rgb(255 182 193 / 50%);
+      overflow: hidden;
+      position: relative;
+    }
+    .imgBox .imglist {
+      width: calc(502px * 4);
+      height: 502px;
+      background-color: lightpink;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+    }
+    .imgBox .imglist li {
+      list-style: none;
+      float: left;
+      width: 502px;
+      height: 100%;
+    }
+    .imgBox .imglist li:nth-child(1) {
+      background: url('imgs/pc1.jpg') center no-repeat;
+      background-size: cover;
+    }
+    .imgBox .imglist li:nth-child(2) {
+      background: url('imgs/pc2.jpg') center no-repeat;
+      background-size: cover;
+    }
+    .imgBox .imglist li:nth-child(3) {
+      background: url('imgs/pc3.jpg') center no-repeat;
+      background-size: cover;
+    }
+    .imgBox .imglist li:nth-child(4) {
+      background: url('imgs/pc4.jpg') center no-repeat;
+      background-size: cover;
+    }
+    .bottomBtn {
+      width: 100%;
+      height: calc(530px - 502px);
+      display: flex;
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+    }
+    .bottomBtn button {
+      border: none;
+      outline: none;
+      flex: 1;
+      background-color: lightpink;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .bottomBtn button:nth-child(1) {
+      border-right: 3px solid #fff;
+    }
+    .bottomBtn button:nth-child(2) {
+      border-left: 3px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="imgBox">
+    <ul class="imglist clearfix">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <div class="bottomBtn">
+      <button class="prevBtn">Prev</button><button class="nextBtn">Next</button>
+    </div>
+  </div>
+  <script src="tool.js"></script>
+
+  <script>
+    // 获取按钮元素
+    var preBtn = document.querySelector('.prevBtn');
+    var nextBtn = document.querySelector('.nextBtn');
+    // 获取移动元素
+    var imgs = document.querySelectorAll('.imgBox .imglist li');
+    var imglist = document.querySelector('.imgBox .imglist');
+    // 获取单个项的宽度
+    var imgwidth = document.querySelector('.imgBox .imglist li').offsetWidth;
+    console.log(imgwidth);
+    // 初始化: 添加索引值
+    imgs.forEach((ele, index) => {
+      ele.setAttribute('index', index);
+      if (index == 0) {
+        ele.classList.add('current');
+      }
+    })
+
+    // 注册点击事件
+    var current = document.querySelector('.imgBox .imglist li.current').getAttribute('index');
+    var imgsNum = document.querySelectorAll('.imgBox .imglist li').length;
+    console.log(imgsNum);
+    preBtn.addEventListener('click', () => {
+      // 判断当前页面是否是最后一张页面
+      current = current == 0? imgsNum - 1 : --current;
+      changeImage();
+      clearRunTimer();
+      resetRunTimer();
+    })
+    nextBtn.addEventListener('click', () => {
+      // 判断当前页面是否是最后一张页面
+      current = current == imgsNum - 1? 0 : ++current;
+      changeImage();
+      clearRunTimer();
+      resetRunTimer();
+    })
+
+    // 注册自动播放事件
+    var autoMove = setInterval(()=>{
+      // 自动播放功能类似于点击了Next按钮
+      nextBtn.click();
+    }, 5000)  
+    function clearRunTimer() {
+      clearInterval(autoMove);
+    }
+    function resetRunTimer() {
+      autoMove = setInterval(()=>{
+        // 自动播放功能类似于点击了Next按钮
+        nextBtn.click();
+      }, 5000)
+    }
+    function changeImage() {
+      var target = current * imgwidth;
+      console.log(target);
+      moveX(imglist, -target);
+      // 更新当前类名标签
+      imgs.forEach(ele => {
+        ele.classList.remove('current');
+      })
+      imgs[current].classList.add('current');
+    }
+    
+    
+    
+
+  </script>
+</body>
+</html>
