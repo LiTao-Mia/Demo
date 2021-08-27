@@ -1,0 +1,102 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-27 14:22:15
+ * @LastEditTime: 2021-08-27 15:53:34
+ * @LastEditors: Please set LastEditors
+ * @Description: 仿写光标浮动显示不同颜色
+ * @FilePath: \Study_Notesd:\Demo\hoverboard.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HoverBoard</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0px;
+      box-sizing: border-box;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      background-color: #111; /* 1D1D1D */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .clearfix::before,
+    .clearfix::after {
+      display: table;
+      content: '';
+      clear: both;
+    }
+    .board {
+
+    }
+    .board .row_square div.square {
+      width: 18px;
+      height: 18px;
+      margin: 2px;
+      float: left;
+      background-color: #1D1D1D;
+      box-shadow: 0 0 2px #000;
+      transition: 2s ease;
+    }
+    .board .row_square div.square:hover {
+      transition-duration: 0s;
+    }
+  </style>
+</head>
+<body>
+  <div class="board clearfix">
+
+  </div>
+
+  <script>
+    var board = document.querySelector('.board');
+    // 颜色集合
+    const colors = ['#e74c3c', '#8e44ad', '#3498db', '#e67e22', '#2ecc71'];
+    // 每行的小方格数
+    var squareNum = 20; 
+    for (let rowindex = 0; rowindex < squareNum; rowindex++) {
+      const row_square = document.createElement('div');
+      row_square.classList.add('row_square');
+      for (let colindex = 0; colindex < squareNum; colindex++) {
+        const square = document.createElement('div');
+        square.classList.add('square');
+        // 添加事件
+        square.addEventListener('mouseover', () => setColor(square));
+        square.addEventListener('mouseout', () => removeColor(square));
+        row_square.appendChild(square);
+      }
+      board.appendChild(row_square);
+    }
+    // // 注册小方格移入移出事件
+    // var squares = document.querySelectorAll('.square');
+    // squares.forEach(ele => {
+    //   ele.addEventListener('mouseenter', () => {
+    //     ele.style.backgroundColor = 'yellow';
+    //   })
+    //   ele.addEventListener('mouseout', () => {
+    //     ele.style.backgroundColor = '#1d1d1d';
+    //   })
+    // })
+    // 获取随机的颜色
+    function getRandomColor() {
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+    function setColor(ele) {
+      const color = getRandomColor();
+      ele.style.backgroundColor = color;
+      ele.style.boxShadow = `0 0 2px ${color}, 0 0 10px ${color}`;
+    }
+    function removeColor(ele) {
+      ele.style.backgroundColor = '#1D1D1D';
+      ele.style.boxShadow = `0 0 2px #000`;
+    }
+  </script>
+</body>
+</html>
